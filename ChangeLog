@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+* add documentation
+
+0.1.0
+-----
+
 * enabling flake8 and release 0.1.0
 * update README
 * update req
