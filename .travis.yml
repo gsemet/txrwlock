@@ -22,11 +22,10 @@ after_success:
 # travis_pypi_setup.py script to finish PyPI deployment setup
 deploy:
   provider: pypi
-  user: stibbons
+  user: "Stibbons"
   distributions: sdist bdist_wheel
   password:
     secure: IHSLyza/BoER1mMVlmaNr4EGGv4d6n0TPKZTrMPi4KsW7FuFvEeiVqX5VFHi54L1EMX8fg0gb4to0LjMyo+wVPSLcDxq5me4MSwPYulgSigEPE9ixVI7R+q8GrkURiSdDeH6PV1kKH9iLDNH9fHunC2a+Nkk4vk6WcFPv1cXLOkX+S8GcHpaHd3NL2kykcotw1b7vUOE96i528IXDK9s4OL2+TPymGuphQysEx1Pop4LPrilk3CfGkZTmKwiF9QhBEfuqJu550SUEs30UMlSBmvC4qGZaeeVpwNSWVrz9lpw/VkR/G0hO0Jt4BY1vODsFpzOog/BrV/EIiMiNHtVU83SeJiQLnmNtoRgJ+HYms/vlst63m+XV/7KzcFNTlZu5aa9Icol3JQT3nZJkfGIWafojtYiIA1lLqYmxtNqLEp5gB+huio79KK9vAkPyr/O532EEMK5nJv06nwXuQCGUnC9XB0qPlzszIj3GVMGhLvMywTUTo+pykuPtqCcSsFkt5fs3JQYxn/wZU+fKnGgUivy/FusD9MPGDIU69wuEye59nUhVTT1092FOZf/uraH8w6n/oTnSjQ984U102nZq983O/bDaVs1DKYgrylyvJ6ERanUt8cZSBQ5ksEqbILE9rYJXVmosjkOjcpXrCEsXJ5UQ98JQ22Q7VWeBEbzqIw=
   on:
-    all_branches: true
-    repo: stibbons/txrwlock
+    all_branches: true\
     condition: $TRAVIS_TAG != ""

@@ -2,6 +2,10 @@
 txrwlock
 ===============================
 
+.. image:: https://readthedocs.org/projects/txrwlock/badge/?version=latest
+:target: http://txrwlock.readthedocs.io/en/latest/?badge=latest
+:alt: Documentation Status
+
 Readers/Writer Lock for Twisted
 
 - Free software: MIT
@@ -21,6 +25,8 @@ and "writer" which may want to change the data in the share.
 - When a write requires access to the share, it prevents any new reader request to fullfil and put
   these requests into a waiting queue. It will wait for all ongoing reads to finish
 - Only one writer can act at the same time
+- This Lock is well suited for share with more readers than writer. Write requests must be at least
+  an order of magnitude less often that read requests
 
 Usage
 -----
