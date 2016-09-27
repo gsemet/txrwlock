@@ -6,12 +6,11 @@ python:
     - 3.5
     - 3.4
     - 2.7
-
 env:
-    matrix:
-        - TWISTED=15.5.0
-        - TWISTED=14.0.2
-        - TWISTED=latest
+    - TWISTED=15.5.0
+    - TWISTED=14.0.2
+    - TWISTED=latest
+matrix:
     exclude:
         # don't test on earlier version on Python 3, 'trial' is not available before TWISTED=15.4.0
         - python: 3.5

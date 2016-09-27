@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* fix bad formatting on exclusion matrix
 * Update Changelog
 * dont test on python3 with twisted < 15.4
 
