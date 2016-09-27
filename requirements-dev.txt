@@ -1,0 +1,8 @@
+flake8
+pycodestyle>=2.0.0
+pyflakes>=1.2.3
+pylint>=1.6.4
+yapf>=0.12
+cryptography==1.4
+PyYAML==3.11
+pytest==2.9.2
