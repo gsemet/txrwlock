@@ -34,7 +34,7 @@ Setup for development and unit tests
 
 .. code-block:: bash
 
-    $ pip install -r requirements.txt -r requirements-dev.txt -e .
+    $ pip install --upgrade -r requirements.txt -r requirements-dev.txt -e .
 
 Build source package:
 

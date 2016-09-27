@@ -1,3 +1,11 @@
 CHANGES
 =======
 
+* update req
+* unit test pass
+* first version (unit test fails)
+* skip pypy
+* enable coveralls
+* fix tox for each conf in travis
+* enable travis build
+* initial commit
