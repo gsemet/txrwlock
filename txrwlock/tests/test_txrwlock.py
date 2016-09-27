@@ -7,14 +7,12 @@ from __future__ import print_function
 import logging
 import sys
 
-from twisted.internet import base
 from twisted.internet import defer
 from twisted.internet import reactor
 from twisted.internet import task
 from twisted.trial.unittest import TestCase
 
 from txrwlock.txrwlock import ReadersWriterDeferredLock
-
 
 logger = logging.getLogger(__name__)
 
@@ -78,13 +76,15 @@ class ReadersWriterDeferredLockTestCase(TestCase):
             self.shared_var = newVal
             yield lock.writerRelease()
 
-        yield defer.gatherResults([
-            read(0.1, 0.1, 10),
-            read(0.1, 0.1, 10),
-            write(0.15, 0.1, 15),
-            write(0.17, 0.1, 20),  # should block until end of previous write
-            read(0.2, 0, [15, 20]),  # '15' if read unlocked before write, else 20
-            read(0.26, 0, 20),  # Should be blocked and return result of the second write
-            read(0.30, 0, 20),  # Should not be blocked
-        ])
+        yield defer.gatherResults(
+            [
+                read(0.1, 0.1, 10),
+                read(0.1, 0.1, 10),
+                write(0.15, 0.1, 15),
+                write(0.17, 0.1, 20),  # should block until end of previous write
+                read(0.2, 0, [15, 20]),  # '15' if read unlocked before write, else 20
+                read(0.26, 0, 20),  # Should be blocked and return result of the second write
+                read(0.30, 0, 20),  # Should not be blocked
+            ]
+        )
         logger.debug("=== TEST FINISHED ===")

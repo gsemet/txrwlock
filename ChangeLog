@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* executing yapf and codestyle
+* prepare an env for python3
 * add documentation
 
 0.1.0

@@ -7,7 +7,6 @@ from twisted.internet import defer
 
 
 class _LightSwitch(object):
-
     '''
     An auxiliary "light switch"-like object. The first deferred turns on the "switch", the
     last one turns it off.
@@ -40,7 +39,6 @@ class ReadersWriterDeferredLock(object):
     #   http://code.activestate.com/recipes/577803-reader-writer-lock-with-priority-for-writers/
     # License:
     #   MIT License
-
     '''
     Readers-Writer Lock for Twisted's Deferred
 
