@@ -8,7 +8,7 @@ from twisted.internet import reactor
 from twisted.internet import task
 from twisted.trial.unittest import TestCase
 
-from txrwlock.deferred_readers_writer_lock import DeferredReadersWriterLock
+from txrwlock.txrwlock import ReadersWriterDeferredLock
 
 
 logger = logging.getLogger(__name__)
@@ -22,7 +22,7 @@ class ReadersWriterDeferredLockTestCase(TestCase):
 
     @defer.inlineCallbacks
     def testSimpleReads(self):
-        lock = DeferredReadersWriterLock()
+        lock = ReadersWriterDeferredLock()
         yield lock.readerAcquire()
         yield lock.readerAcquire()
         self.assertFalse(lock.isWriting)
@@ -31,7 +31,7 @@ class ReadersWriterDeferredLockTestCase(TestCase):
 
     @defer.inlineCallbacks
     def testSimpleWrites(self):
-        lock = DeferredReadersWriterLock()
+        lock = ReadersWriterDeferredLock()
         self.assertFalse(lock.isWriting)
         yield lock.writerAcquire()
         self.assertTrue(lock.isWriting)
@@ -43,7 +43,7 @@ class ReadersWriterDeferredLockTestCase(TestCase):
     def testWrites(self):
         # Set debug to True to get full traceback of unclean deferred
         self.patch(base.DelayedCall, "debug", False)
-        lock = DeferredReadersWriterLock()
+        lock = ReadersWriterDeferredLock()
         self.shared_var = 10
 
         @defer.inlineCallbacks

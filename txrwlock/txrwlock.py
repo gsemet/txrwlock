@@ -2,7 +2,7 @@
 from twisted.internet import defer
 
 
-class __LightSwitch(object):
+class _LightSwitch(object):
 
     '''
     An auxiliary "light switch"-like object. The first deferred turns on the "switch", the
@@ -55,7 +55,7 @@ class ReadersWriterDeferredLock(object):
     Description
     -----------
 
-    "Readers" uses ``readerAcquire`` and ``readRelease``.
+    "Readers" uses ``readerAcquire`` and ``readerRelease``.
     "Writer" uses ``writerAcquire`` and ``writerRelease``.
 
     Python version > 3.5 can also use `async with reader`
@@ -68,8 +68,8 @@ class ReadersWriterDeferredLock(object):
 
     Notes:
 
-        Please be aware than ``DeferredReadersWriterLock.acquire*`` and
-        ``DeferredReadersWriterLock.release*`` methods are deferred, which is different from
+        Please be aware than ``ReadersWriterDeferredLock.acquire*`` and
+        ``ReadersWriterDeferredLock.release*`` methods are deferred, which is different from
         ``defer.DeferredLock``, where only the ``defer.DeferredLock.acquire()`` method is a
         deferred.
 
@@ -86,7 +86,7 @@ class ReadersWriterDeferredLock(object):
                 yield aServer.readerAcquire()
                 ... any treatment ...
             finally:
-                yield aServer.readRelease()
+                yield aServer.readerRelease()
 
         @defer.inlineCallbacks
         def aWriterMethod(...):
@@ -98,8 +98,8 @@ class ReadersWriterDeferredLock(object):
     '''
 
     def __init__(self):
-        self.__rd_swtch = __LightSwitch()
-        self.__wrte_swtch = __LightSwitch()
+        self.__rd_swtch = _LightSwitch()
+        self.__wrte_swtch = _LightSwitch()
         self.__no_rdr = defer.DeferredLock()
         self.__no_wrtr = defer.DeferredLock()
         self.__rdrs_q = defer.DeferredLock()
@@ -117,7 +117,7 @@ class ReadersWriterDeferredLock(object):
         self.__rdrs_q.release()
 
     @defer.inlineCallbacks
-    def readRelease(self):
+    def readerRelease(self):
         yield self.__rd_swtch.release(self.__no_wrtr)
 
     @defer.inlineCallbacks
@@ -131,4 +131,4 @@ class ReadersWriterDeferredLock(object):
         yield self.__wrte_swtch.release(self.__no_rdr)
 
 
-__all__ = [DeferredReadersWriterLock]
+__all__ = [ReadersWriterDeferredLock]

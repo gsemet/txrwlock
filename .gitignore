@@ -30,6 +30,7 @@ nosetests.xml
 .testrepository
 .venv
 venv
+_trial_temp/
 
 # Translations
 *.mo
