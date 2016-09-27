@@ -8,11 +8,14 @@ txrwlock
     :alt: Documentation Status
 .. image:: https://coveralls.io/repos/github/Stibbons/txrwlock/badge.svg
     :target: https://coveralls.io/github/Stibbons/txrwlock
+.. image:: https://readthedocs.org/projects/txrwlock/badge/?version=latest
+    :target: http://txrwlock.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 Readers/Writer Lock for Twisted
 
 - Free software: MIT
-- Documentation: txrwlock.readthedocs.org/en/latest/
+- Documentation: http://txrwlock.readthedocs.io/en/latest/
 - Source: https://github.com/Stibbons/txrwlock
 
 Features
