@@ -87,23 +87,27 @@ class ReadersWriterDeferredLock(object):
 
     Threads that just need "read" access, use the following pattern:
 
-    .. code-block:: yaml
+    .. code-block:: python
 
         @defer.inlineCallbacks
         def aReaderMethod(...):
             try:
-                yield aServer.readerAcquire()
+                yield rwlocker.readerAcquire()
                 # ... any treatment ...
             finally:
-                yield aServer.readerRelease()
+                yield rwlocker.readerRelease()
+
+    Threads that just need "read" access, use the following pattern:
+
+    .. code-block:: python
 
         @defer.inlineCallbacks
         def aWriterMethod(...):
             try:
-                yield aServer.writerAcquire()
+                yield rwlocker.writerAcquire()
                 # ... any treatment ...
             finally:
-                yield aServer.writerRelease()
+                yield rwlocker.writerRelease()
     '''
 
     def __init__(self):

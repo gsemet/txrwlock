@@ -11,6 +11,9 @@ txrwlock
 .. image:: https://readthedocs.org/projects/txrwlock/badge/?version=latest
     :target: http://txrwlock.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+.. image:: https://badge.fury.io/py/txrwlock.svg
+    :target: https://pypi.python.org/pypi/txrwlock/
+    :alt: Pypi package
 
 Readers/Writer Lock for Twisted
 
@@ -49,6 +52,30 @@ deferred, and then, when the reading deferred "resumes", continue reading data, 
 
 Usage
 -----
+
+A deferred that needs "read" access, use the following pattern:
+
+.. code-block:: python
+
+    @defer.inlineCallbacks
+    def aReaderMethod(...):
+        try:
+            yield rwlocker.readerAcquire()
+            # ... any treatment ...
+        finally:
+            yield rwlocker.readerRelease()
+
+A deferred that needs "write" access, use the following pattern:
+
+.. code-block:: python
+
+    @defer.inlineCallbacks
+    def aWriterMethod(...):
+        try:
+            yield rwlocker.writerAcquire()
+            # ... any treatment ...
+        finally:
+            yield rwlocker.writerRelease()
 
 Development
 -----------
