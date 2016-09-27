@@ -36,6 +36,7 @@ Create a virtualenv:
 .. code-block:: bash
 
     $ virtualenv venv
+    $ # virtualenv --python=python3 venv3
     $ source venv/bin/activate
     $ pip install --upgrade pip  # Force upgrade to latest version of pip
 

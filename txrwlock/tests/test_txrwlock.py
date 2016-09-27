@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import logging
+import sys
 
 from twisted.internet import base
 from twisted.internet import defer
@@ -13,6 +18,11 @@ from txrwlock.txrwlock import ReadersWriterDeferredLock
 
 logger = logging.getLogger(__name__)
 
+if sys.version_info >= (3, 5):
+    g_test_async = True
+else:
+    g_test_async = False
+
 
 def sleep(numSec):
     return task.deferLater(reactor, numSec, lambda: None)
@@ -21,7 +31,7 @@ def sleep(numSec):
 class ReadersWriterDeferredLockTestCase(TestCase):
 
     @defer.inlineCallbacks
-    def testSimpleReads(self):
+    def testReaderLock(self):
         lock = ReadersWriterDeferredLock()
         yield lock.readerAcquire()
         yield lock.readerAcquire()
@@ -30,7 +40,7 @@ class ReadersWriterDeferredLockTestCase(TestCase):
         yield lock.readerRelease()
 
     @defer.inlineCallbacks
-    def testSimpleWrites(self):
+    def testeWriterLock(self):
         lock = ReadersWriterDeferredLock()
         self.assertFalse(lock.isWriting)
         yield lock.writerAcquire()
@@ -38,11 +48,8 @@ class ReadersWriterDeferredLockTestCase(TestCase):
         yield lock.writerRelease()
         self.assertFalse(lock.isWriting)
 
-    # @TxTestCase.verboseLogging()
     @defer.inlineCallbacks
-    def testWrites(self):
-        # Set debug to True to get full traceback of unclean deferred
-        self.patch(base.DelayedCall, "debug", False)
+    def testeWriterBlocksReaders(self):
         lock = ReadersWriterDeferredLock()
         self.shared_var = 10
 
