@@ -16,7 +16,7 @@ from txrwlock.txrwlock import ReadersWriterDeferredLock
 
 logger = logging.getLogger(__name__)
 
-if sys.version_info >= (3, 5):
+if sys.version_info >= (3, 5) and hasattr(defer, "deferredCoroutine"):
     g_test_async = True
 else:
     g_test_async = False
@@ -34,6 +34,7 @@ class ReadersWriterDeferredLockTestCase(TestCase):
         yield lock.readerAcquire()
         yield lock.readerAcquire()
         self.assertFalse(lock.isWriting)
+        self.assertTrue(lock.isReading)
         yield lock.readerRelease()
         yield lock.readerRelease()
 
@@ -41,10 +42,20 @@ class ReadersWriterDeferredLockTestCase(TestCase):
     def testeWriterLock(self):
         lock = ReadersWriterDeferredLock()
         self.assertFalse(lock.isWriting)
+        self.assertFalse(lock.isReading)
         yield lock.writerAcquire()
         self.assertTrue(lock.isWriting)
+        self.assertFalse(lock.isReading)
         yield lock.writerRelease()
         self.assertFalse(lock.isWriting)
+
+    if g_test_async:
+        @defer.deferredCoroutine
+        async def testPy3AsyncWithReaderLock(self):
+            lock = ReadersWriterDeferredLock()
+            async with lock.readerAcquire():
+                self.assertTrue(lock.isReading)
+            self.assertFalse(lock.isReading)
 
     @defer.inlineCallbacks
     def testeWriterBlocksReaders(self):

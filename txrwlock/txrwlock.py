@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+# Twisted implementation of the Readers/Writer Lock
+# Inspirated by:
+#   http://code.activestate.com/recipes/577803-reader-writer-lock-with-priority-for-writers/
+# License:
+#   MIT License
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -18,6 +23,9 @@ class _LightSwitch(object):
 
     @defer.inlineCallbacks
     def acquire(self, lock):
+        '''
+        Acquire the lock and increase the counter
+        '''
         yield self.__m.acquire()
         self.__cnt += 1
         if self.__cnt == 1:
@@ -26,6 +34,9 @@ class _LightSwitch(object):
 
     @defer.inlineCallbacks
     def release(self, lock):
+        '''
+        Release the lock and decreaser the counter
+        '''
         yield self.__m.acquire()
         self.__cnt -= 1
         if self.__cnt == 0:
@@ -35,10 +46,6 @@ class _LightSwitch(object):
 
 class ReadersWriterDeferredLock(object):
 
-    # Source:
-    #   http://code.activestate.com/recipes/577803-reader-writer-lock-with-priority-for-writers/
-    # License:
-    #   MIT License
     '''
     Readers-Writer Lock for Twisted's Deferred
 
@@ -63,7 +70,7 @@ class ReadersWriterDeferredLock(object):
     Python version > 3.5 can also use `async with reader`
 
     A "reader" is not blocked when 2 or more 'reads' are executing.
-    A "reader" is blocked when a 'write' is executing.
+    A "reader" is blocked when a 'writer' is executing.
 
     When a "write" is started, it blocks all new 'reads' and wait for the pending 'reads' to finish.
     If a new 'write" is requested, it will wait for running writes to finish as well.
@@ -86,7 +93,7 @@ class ReadersWriterDeferredLock(object):
         def aReaderMethod(...):
             try:
                 yield aServer.readerAcquire()
-                ... any treatment ...
+                # ... any treatment ...
             finally:
                 yield aServer.readerRelease()
 
@@ -94,7 +101,7 @@ class ReadersWriterDeferredLock(object):
         def aWriterMethod(...):
             try:
                 yield aServer.writerAcquire()
-                ... any treatment ...
+                # ... any treatment ...
             finally:
                 yield aServer.writerRelease()
     '''
@@ -107,11 +114,29 @@ class ReadersWriterDeferredLock(object):
         self.__rdrs_q = defer.DeferredLock()
 
     @property
+    def isReading(self):
+        '''
+        Is the lock acquired for read? (will return false if only required for writer)
+        '''
+        return self.__no_wrtr.locked and not self.__no_rdr.locked
+
+    @property
     def isWriting(self):
+        '''
+        Is the lock acquired for write?
+        '''
         return self.__no_rdr.locked
 
     @defer.inlineCallbacks
     def readerAcquire(self):
+        """
+        Acquire the lock for a Reader.
+
+        If the lock has been acquire by only reader, this method will not block.
+        If the lock has been requested by at least one writer, even if this writer is waiting for
+        all ongoing readers to finish, this call will be blocked
+        """
+
         yield self.__rdrs_q.acquire()
         yield self.__no_rdr.acquire()
         yield self.__rd_swtch.acquire(self.__no_wrtr)
@@ -120,15 +145,31 @@ class ReadersWriterDeferredLock(object):
 
     @defer.inlineCallbacks
     def readerRelease(self):
+        """
+        Release the lock by a reader
+        """
         yield self.__rd_swtch.release(self.__no_wrtr)
 
     @defer.inlineCallbacks
     def writerAcquire(self):
+        """
+        Acquire the lock for a Writer
+
+        If at least one other reader is ongoing, this call will block any new reader request, and
+        will wait for all reader to finish.
+
+        If two writer request access to the lock, each one will wait so only one write has the lock
+        at the a time.
+        """
+
         yield self.__wrte_swtch.acquire(self.__no_rdr)
         yield self.__no_wrtr.acquire()
 
     @defer.inlineCallbacks
     def writerRelease(self):
+        """
+        Release the lock by a Writer
+        """
         self.__no_wrtr.release()
         yield self.__wrte_swtch.release(self.__no_rdr)
 
