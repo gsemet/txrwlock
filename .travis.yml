@@ -11,13 +11,9 @@ env:
     - TWISTED=14.0.2
     - TWISTED=15.5.0
     - TWISTED=16.0.0
-    - TWISTED=16.1.0
     - TWISTED=16.1.1
     - TWISTED=16.2.0
-    - TWISTED=16.3.0
-    - TWISTED=16.3.1
     - TWISTED=16.3.2
-    - TWISTED=16.4.0
     - TWISTED=16.4.1
 matrix:
     exclude:

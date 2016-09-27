@@ -34,8 +34,24 @@ and "writer" which may want to change the data in the share.
 - This Lock is well suited for share with more readers than writer. Write requests must be at least
   an order of magnitude less often that read requests
 
+For example, a data structure is shared by a different deferreds, triggered on different contexts.
+Obviously, only one deferred can be writing to the data structure at a time. If more than one was
+writing, then they could potentially overwrite each other's data. To prevent this from happening,
+the writing deferred obtain a "writer" lock in an exclusive manner, meaning that it and only it  has
+access to the data structure. Note that the exclusivity of the access is controlled strictly by
+voluntary means. The opposite occurs with readers; since reading a data area is a non-destructive
+operation, any number of concurent deferred can be reading the data.
+
+However, you should protect all parts that will read data in a coherence way. For example, the
+reading deferred may be confused by reading a part of the data, getting preempted by a writing
+deferred, and then, when the reading deferred "resumes", continue reading data, but from a newer
+"update" of the data. A data inconsistency would then result.
+
 Usage
 -----
+
+Development
+-----------
 
 Create a virtualenv:
 
