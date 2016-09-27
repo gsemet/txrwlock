@@ -6,6 +6,8 @@ txrwlock
 .. image:: https://readthedocs.org/projects/txrwlock/badge/?version=latest
     :target: http://txrwlock.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+.. image:: https://coveralls.io/repos/github/Stibbons/txrwlock/badge.svg
+    :target: https://coveralls.io/github/Stibbons/txrwlock
 
 Readers/Writer Lock for Twisted
 
