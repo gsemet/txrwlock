@@ -1,6 +1,9 @@
 CHANGES
 =======
 
+* fix unit test in travis
+* matrix conf in travis
+* support for upcoming deferredCoroutine
 * executing yapf and codestyle
 * prepare an env for python3
 * add documentation

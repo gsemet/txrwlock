@@ -1,10 +1,11 @@
 ===============================
 txrwlock
 ===============================
-
+.. image:: https://travis-ci.org/Stibbons/txrwlock.svg?branch=master
+    :target: https://travis-ci.org/Stibbons/txrwlock
 .. image:: https://readthedocs.org/projects/txrwlock/badge/?version=latest
-:target: http://txrwlock.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
+    :target: http://txrwlock.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 Readers/Writer Lock for Twisted
 
