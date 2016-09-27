@@ -1,6 +1,20 @@
 CHANGES
 =======
 
+* Update Changelog
+* dont test on python3 with twisted < 15.4
+
+0.2.1
+-----
+
+* skip await test due to syntax error on prev python
+
+0.2.0
+-----
+
+* update link and badge to readthedoc
+* update badges
+* dont use setup.py test
 * fix unit test in travis
 * matrix conf in travis
 * support for upcoming deferredCoroutine
