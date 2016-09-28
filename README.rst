@@ -20,6 +20,7 @@ Readers/Writer Lock for Twisted
 - Free software: MIT
 - Documentation: http://txrwlock.readthedocs.io/en/latest/
 - Source: https://github.com/Stibbons/txrwlock
+- Presentation: http://www.great-a-blog.co/readerswriter-lock-for-twisted/
 
 Features
 --------
