@@ -11,6 +11,9 @@ txrwlock
 .. image:: https://badge.fury.io/py/txrwlock.svg
     :target: https://pypi.python.org/pypi/txrwlock/
     :alt: Pypi package
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: ./LICENSE
+    :alt: MIT licensed
 
 Readers/Writer Lock for Twisted
 

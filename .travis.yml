@@ -45,10 +45,10 @@ after_success:
 
 deploy:
     provider: pypi
-    user: "Stibbons"
-    distributions: sdist bdist_wheel
+    user: stibbons
     password:
-        secure: IHSLyza/BoER1mMVlmaNr4EGGv4d6n0TPKZTrMPi4KsW7FuFvEeiVqX5VFHi54L1EMX8fg0gb4to0LjMyo+wVPSLcDxq5me4MSwPYulgSigEPE9ixVI7R+q8GrkURiSdDeH6PV1kKH9iLDNH9fHunC2a+Nkk4vk6WcFPv1cXLOkX+S8GcHpaHd3NL2kykcotw1b7vUOE96i528IXDK9s4OL2+TPymGuphQysEx1Pop4LPrilk3CfGkZTmKwiF9QhBEfuqJu550SUEs30UMlSBmvC4qGZaeeVpwNSWVrz9lpw/VkR/G0hO0Jt4BY1vODsFpzOog/BrV/EIiMiNHtVU83SeJiQLnmNtoRgJ+HYms/vlst63m+XV/7KzcFNTlZu5aa9Icol3JQT3nZJkfGIWafojtYiIA1lLqYmxtNqLEp5gB+huio79KK9vAkPyr/O532EEMK5nJv06nwXuQCGUnC9XB0qPlzszIj3GVMGhLvMywTUTo+pykuPtqCcSsFkt5fs3JQYxn/wZU+fKnGgUivy/FusD9MPGDIU69wuEye59nUhVTT1092FOZf/uraH8w6n/oTnSjQ984U102nZq983O/bDaVs1DKYgrylyvJ6ERanUt8cZSBQ5ksEqbILE9rYJXVmosjkOjcpXrCEsXJ5UQ98JQ22Q7VWeBEbzqIw=
+        secure: H3e9XCo6PMnMhMETiEMxnZtof0LtoLc5a+QlMr371c62c3ZaGom5u1nWNe81BKs5/5k5i5oGPq4HiTc6WrXTqH1Dzxxw27zNJNqwtRDlFD9VNRELywYn9hk6Pzoe2l1wOz3JhHKNkfmqZbq/0VuaZAChpOfFoxe1vrl/lZlIcWxl0+Z70G1h2SsfPZtEfM2fuklAYrK7YhtvxyQZTj2FEXR4PMGyQvuWJ9+ZOWRqpADQkYuK4qoLXwA49j/oouFx674kiPgvr+GX59YVf662VQ+wFGoK8QzOb2rMTsWxg+dIqgAQcXNy0p/S9FdygpAfRrpfQSFO18U5QHKR54CwEPuuTzPwUtExFTkjpeVoB0TyvLnt5IuK5mBRkjdHEYOnSLx/J+Nonbx9BAN9IIJ2+Sj5DFiIteIVaM7toTpu+EDrk6+hD+JKdN0FaPnZmT3UtaNQZVTqCOoxYkZvDco0uwrC+KwlMY9WsxezWhWq1dSMZNilueQjPgbPgCGpXE7nHXBu8Le7k7tNZo5alIji6d7jumurltLYH9iPnzC2aHJsh2kaLZog6bAhEKUxMok3IwYlR/MkW9j4vuLDLDontTpG2JSFCvX+NfZ79lKWNRbhfCxjVXD6awUQOqw1BpAQO0g7oJMQC/PJOGHN0NEIEF77RGAyJ8M+DQA0fGS6OWU=
     on:
-        all_branches: true\
-        condition: $TRAVIS_TAG != "" && $TWISTED == "latest"
+        tags: true
+        distributions: sdist bdist_wheel
+        repo: Stibbons/txrwlock
