@@ -37,6 +37,9 @@ and "writer" which may want to change the data in the share.
 - This Lock is well suited for share with more readers than writer. Write requests must be at least
   an order of magnitude less often that read requests
 
+This implementation brings this mechanism to the Twisted's deferred. Please note they are
+independent with other multithreading RW lock.
+
 For example, a data structure is shared by a different deferreds, triggered on different contexts.
 Obviously, only one deferred can be writing to the data structure at a time. If more than one was
 writing, then they could potentially overwrite each other's data. To prevent this from happening,
@@ -50,10 +53,13 @@ reading deferred may be confused by reading a part of the data, getting preempte
 deferred, and then, when the reading deferred "resumes", continue reading data, but from a newer
 "update" of the data. A data inconsistency would then result.
 
+Heavily inspirated `by this example <http://code.activestate.com/recipes/577803-reader-writer-lock-
+with-priority-for-writers/>`_.
+
 Usage
 -----
 
-A deferred that needs "read" access, use the following pattern:
+An Inlinecallbacks deferred that needs "read" access to a share use thes following pattern:
 
 .. code-block:: python
 
@@ -65,7 +71,7 @@ A deferred that needs "read" access, use the following pattern:
         finally:
             yield rwlocker.readerRelease()
 
-A deferred that needs "write" access, use the following pattern:
+An Inlinecallbacks deferred that needs "write" access to a share uses the following pattern:
 
 .. code-block:: python
 
@@ -76,6 +82,16 @@ A deferred that needs "write" access, use the following pattern:
             # ... any treatment ...
         finally:
             yield rwlocker.writerRelease()
+
+Setup for production
+--------------------
+
+Just ensure requirements.txt is installed with pip. This step is not useful is you use `txrwlock`
+from a distribution package or a wheel.
+
+.. code-block:: bash
+
+    $ pip install -r requirements.txt .
 
 Development
 -----------
@@ -88,12 +104,6 @@ Create a virtualenv:
     $ # virtualenv --python=python3 venv3
     $ source venv/bin/activate
     $ pip install --upgrade pip  # Force upgrade to latest version of pip
-
-Setup for production:
-
-.. code-block:: bash
-
-    $ pip install -r requirements.txt .
 
 Setup for development and unit tests
 
