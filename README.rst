@@ -128,3 +128,15 @@ Build Wheel package:
 .. code-block:: bash
 
     python setup.py bdist_wheel
+
+Execute unit test:
+
+.. code-block:: bash
+
+    trial txrwlock
+
+Execute coverage:
+
+.. code-block:: bash
+
+    trial --coverage txrwlock

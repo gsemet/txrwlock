@@ -1,16 +1,27 @@
-.. Readers/Writer Lock for Twisted documentation master file, created by
-   sphinx-quickstart on Tue Sep 27 22:20:21 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to Readers/Writer Lock for Twisted's documentation!
-===========================================================
-
-Contents:
+Welcome to Readers/Writer Lock for Twisted
+==========================================
 
 .. toctree::
    :maxdepth: 2
 
+
+Twisted implementation of a  `Readers/Writer Lock
+<https://en.wikipedia.org/wiki/Readers–writer_lock>`_. This synchronization primitive allows to lock
+a share depending on two access roles: "reader" which only access to the data without modifying it,
+and "writer" which may want to change the data in the share.
+
+RW Lock features:
+
+- Multiple readers can access to the data at the same time. There is no locking at all when only
+  readers require access to the share
+- When a write requires access to the share, it prevents any new reader request to fullfil and put
+  these requests into a waiting queue. It will wait for all ongoing reads to finish
+- Only one writer can act at the same time
+- This Lock is well suited for share with more readers than writer. Write requests must be at least
+  an order of magnitude less often that read requests
+
+This implementation brings this mechanism to the Twisted's deferred. Please note they are
+independent with other multithreading RW locks.
 
 
 Indices and tables
@@ -19,4 +30,10 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Source Documentation
+====================
+
+.. autoclass:: txrwlock.txrwlock.ReadersWriterDeferredLock
+   :members:
 

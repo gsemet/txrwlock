@@ -34,10 +34,13 @@ install:
     - pip install -U tox coveralls
 
 # command to run tests
-script: trial txrwlock
+script:
+    - trial txrwlock
+    - trial --coverage txrwlock
+    - python setup.py build_sphinx
 
 after_success:
-    "coveralls"
+    - "coveralls"
 
 # After you create the Github repo and add it to Travis, run the
 # travis_pypi_setup.py script to finish PyPI deployment setup

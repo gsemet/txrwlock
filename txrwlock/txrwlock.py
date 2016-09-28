@@ -11,6 +11,9 @@ from __future__ import print_function
 from twisted.internet import defer
 
 
+__all__ = ["ReadersWriterDeferredLock"]
+
+
 class _LightSwitch(object):
     '''
     An auxiliary "light switch"-like object. The first deferred turns on the "switch", the
@@ -53,26 +56,27 @@ class ReadersWriterDeferredLock(object):
     access to this share.
 
     The following constraints should be met:
-    1) no reader should be kept waiting if the share is currently not opened to anyone or to only
+
+    #. no reader should be kept waiting if the share is currently not opened to anyone or to only
        other readers.
-    2) only one writer can open the share at the same time, and when multiple writer request access,
+    #. only one writer can open the share at the same time, and when multiple writer request access,
        they will waiting for the execution of all previous writer access
 
     Reads and Writes are executed from within the main twisted reactor. Do **NOT** call it from
     external threads (e.g., from synchronous method execute in thread with ``deferToThread``).
 
-    Description
-    -----------
+    **Description**
 
-    "Readers" uses ``readerAcquire`` and ``readerRelease``.
-    "Writer" uses ``writerAcquire`` and ``writerRelease``.
+    - "Readers" uses ``readerAcquire`` and ``readerRelease``.
+    - "Writer" uses ``writerAcquire`` and ``writerRelease``.
 
-    Python version > 3.5 can also use `async with reader`
+    .. Python version > 3.5 can also use `async with reader`
 
-    A "reader" is not blocked when 2 or more 'reads' are executing.
-    A "reader" is blocked when a 'writer' is executing.
+    A "reader" is not blocked when one, two or more 'reads' are being executed.
 
-    When a "write" is started, it blocks all new 'reads' and wait for the pending 'reads' to finish.
+    A "reader" is blocked while a 'writer' is executing.
+
+    When a "write" starts, it blocks all new 'reads' and wait for the pending 'reads' to finish.
     If a new 'write" is requested, it will wait for running writes to finish as well.
 
     Notes:
@@ -82,8 +86,7 @@ class ReadersWriterDeferredLock(object):
         ``defer.DeferredLock``, where only the ``defer.DeferredLock.acquire()`` method is a
         deferred.
 
-    Usage
-    -----
+    **Usage**
 
     Threads that just need "read" access, use the following pattern:
 
@@ -108,6 +111,44 @@ class ReadersWriterDeferredLock(object):
                 # ... any treatment ...
             finally:
                 yield rwlocker.writerRelease()
+
+    **Example**
+
+    .. code-block:: python
+
+        from twisted.internet import defer
+        from txrwlock.txrwlock import ReadersWriterDeferredLock
+
+        class MySharedObject(object):
+
+            def __init__(self):
+                self._readWriteLock = DeferredReadersWriterLock()
+                self._data = {}
+
+            @defer.inlineCallbacks
+            def performHeavyTreatmentOnData(self):
+                try:
+                    yield rwlocker.readerAcquire()
+                    # self._data is read and need to stay coherent during the whole current method
+                    yield anyOtherVeryLongDeferredThatReadsData(self._data)
+                    # self._data is read again
+                finally:
+                    yield rwlocker.readerRelease()
+
+            @defer.inlineCallbacks
+            def changeDataValue(self):
+                try:
+                    yield rwlocker.writerAcquire()
+                    # Change self._data somehow
+                finally:
+                    yield rwlocker.writerRelease()
+
+    There could be as many simultanous calls to ``MySharedObject.performHeavyTreatmentOnData``
+    at the same time (during ``anyOtherVeryLongDeferredThatReadsData``, the reactor might
+    schedule a new call to ``MySharedObject.performHeavyTreatmentOnData``). Once
+    ``MySharedObject.changeDataValue`` is called, all new call to
+    ``performHeavyTreatmentOnData`` are blocked.
+
     '''
 
     def __init__(self):
@@ -134,11 +175,28 @@ class ReadersWriterDeferredLock(object):
     @defer.inlineCallbacks
     def readerAcquire(self):
         """
-        Acquire the lock for a Reader.
+        Deferred to acquire the lock for a Reader.
+
+        Inside an inlineCallback, you need to yield this call.
 
         If the lock has been acquire by only reader, this method will not block.
         If the lock has been requested by at least one writer, even if this writer is waiting for
-        all ongoing readers to finish, this call will be blocked
+        all ongoing readers to finish, this call will be blocked.
+
+        You need to enclose this call inside try/finally to ensure the lock is always released, even
+        in case of exception.
+
+        Example:
+
+        .. code-block:: python
+
+            @defer.inlineCallbacks
+            def aReaderMethod(...):
+                try:
+                    yield rwlocker.readerAcquire()
+                    # ... any treatment ...
+                finally:
+                    yield rwlocker.readerRelease()
         """
 
         yield self.__rdrs_q.acquire()
@@ -150,20 +208,39 @@ class ReadersWriterDeferredLock(object):
     @defer.inlineCallbacks
     def readerRelease(self):
         """
-        Release the lock by a reader
+        Release the lock by a reader.
+
+        Inside an inlineCallback, you need to yield this call.
+
+        This call is always non-blocking.
         """
         yield self.__rd_swtch.release(self.__no_wrtr)
 
     @defer.inlineCallbacks
     def writerAcquire(self):
         """
-        Acquire the lock for a Writer
+        Acquire the lock for a Writer.
+
+        Inside an inlineCallback, you need to yield this call.
 
         If at least one other reader is ongoing, this call will block any new reader request, and
-        will wait for all reader to finish.
+        will wait for all reader to finish. If two writers request access to the lock, each one will
+        wait so only one write has the lock at the a time.
 
-        If two writer request access to the lock, each one will wait so only one write has the lock
-        at the a time.
+        You need to enclose this call inside try/finally to ensure the lock is always released, even
+        in case of exception.
+
+        Example:
+
+        .. code-block:: python
+
+            @defer.inlineCallbacks
+            def aWriterMethod(...):
+                try:
+                    yield rwlocker.writerAcquire()
+                    # ... any treatment ...
+                finally:
+                    yield rwlocker.writerRelease()
         """
 
         yield self.__wrte_swtch.acquire(self.__no_rdr)
@@ -172,10 +249,11 @@ class ReadersWriterDeferredLock(object):
     @defer.inlineCallbacks
     def writerRelease(self):
         """
-        Release the lock by a Writer
+        Release the lock by a Writer.
+
+        Inside an inlineCallback, you need to yield this call.
+
+        This call is always non-blocking
         """
         self.__no_wrtr.release()
         yield self.__wrte_swtch.release(self.__no_rdr)
-
-
-__all__ = [ReadersWriterDeferredLock]
