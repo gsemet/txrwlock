@@ -28,6 +28,7 @@ pip-log.txt
 # Unit test / coverage reports
 cover/
 .coverage*
+coverage.xml
 !.coveragerc
 .tox
 nosetests.xml
