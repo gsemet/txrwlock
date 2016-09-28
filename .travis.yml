@@ -27,13 +27,17 @@ matrix:
 
 # command to install dependencies
 install:
+    # Upgrade to latest version of pip
     - pip install -U pip
+    # install external service interface:
+    #   - codecov for to codecov.io; see after_success
+    #   - coveralls for coveralls.io
+    - pip install -U coveralls coverage codecov
     - pip install -U -r requirements.txt -r requirements-dev.txt .
     - |
         # Overwrite twisted package for test
         set -e
         [ $TWISTED = latest ] || pip install Twisted==$TWISTED
-    - pip install -U tox coveralls coverage
 
 # command to run tests
 script:
@@ -43,7 +47,7 @@ script:
 
 after_success:
     - "coveralls"
-
+    - codecov
 
 deploy:
     provider: pypi
