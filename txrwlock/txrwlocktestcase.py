@@ -13,22 +13,13 @@ __all__ = ['TxRWLockTestCase']
 
 class TxRWLockTestCase(TestCase):
     '''
-    Unit test helper class for Twisted. Provides useful methods to test exception cases, such as
-    `assertRaisesWithMessage` and `assertInlineCallbacksRaisesWithMessage` in addition to
-    `twisted.trial.unittest.TestCase`.
+    Unit test helper class for Twisted.
+
+    Provides useful methods to test exception cases, such as `assertRaisesWithMessage` and
+    `assertInlineCallbacksRaisesWithMessage` in addition to `twisted.trial.unittest.TestCase`.
     '''
-    def _handleExceptionMessageComparison(self, err, expectedMessage):
+    def __assertExceptionMessageIs(self, err, expectedMessage):
         if hasattr(err, "message"):
-            # If the exception has a "message" member, use it directly, since the default case,
-            # convert to str, will add unnecessary escape character arround ''
-            # Example:
-            #    >>> e = KeyError("invalid message: 'a string with a \"'")
-            #    >>> print e
-            #    'invalid message: \'a string with a "\''
-            #    >>> print str(e)
-            #    'invalid message: \'a string with a "\''
-            #    >>> print e.message
-            #    invalid message: 'a string with a "'
             self.assertSubstring(expectedMessage, err.message)
         else:
             self.assertSubstring(expectedMessage, str(err))
@@ -43,9 +34,9 @@ class TxRWLockTestCase(TestCase):
         try:
             defer.maybeDeferred(func(*args, **kw))
         except exceptionClass as err:
-            self._handleExceptionMessageComparison(err, expectedMessage)
+            self.__assertExceptionMessageIs(err, expectedMessage)
             return
-        raise Exception("%s not raised" % (exceptionClass,))
+        raise Exception("{0} not raised".format(exceptionClass,))
 
     @defer.inlineCallbacks
     def assertInlineCallbacksRaisesWithMessage(self, exceptionClass, expectedMessage,
@@ -60,9 +51,9 @@ class TxRWLockTestCase(TestCase):
         try:
             yield inlineCallbacksFunc(*args, **kw)
         except exceptionClass as err:
-            self._handleExceptionMessageComparison(err, expectedMessage)
+            self.__assertExceptionMessageIs(err, expectedMessage)
             return
-        raise Exception("%s not raised" % (exceptionClass,))
+        raise Exception("{0} not raised".format(exceptionClass,))
 
     @defer.inlineCallbacks
     def assertInlineCallbacksRaises(self, exceptionClass, inlineCallbacksFunc, *args, **kw):
@@ -77,4 +68,4 @@ class TxRWLockTestCase(TestCase):
             yield inlineCallbacksFunc(*args, **kw)
         except exceptionClass:
             return
-        raise Exception("{} not raised".format(exceptionClass))
+        raise Exception("{0} not raised".format(exceptionClass))
