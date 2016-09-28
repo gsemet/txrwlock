@@ -1,5 +1,5 @@
-Welcome to Readers/Writer Lock for Twisted
-==========================================
+Readers/Writer Lock for Twisted
+===============================
 
 .. toctree::
    :maxdepth: 2
@@ -34,6 +34,16 @@ Indices and tables
 Source Documentation
 ====================
 
+Readers/Writer Deferred Lock
+----------------------------
+
 .. autoclass:: txrwlock.txrwlock.ReadersWriterDeferredLock
+   :members:
+
+
+Readers/Writer Deferred Lock TestCase
+-------------------------------------
+
+.. autoclass:: txrwlock.txrwlocktestcase.TxRWLockTestCase
    :members:
 

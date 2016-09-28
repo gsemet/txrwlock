@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 from __future__ import division
@@ -10,23 +9,18 @@ import sys
 from twisted.internet import defer
 from twisted.internet import reactor
 from twisted.internet import task
-from twisted.trial.unittest import TestCase
 
 from txrwlock.txrwlock import ReadersWriterDeferredLock
+from txrwlock.txrwlocktestcase import TxRWLockTestCase
 
 logger = logging.getLogger(__name__)
-
-if sys.version_info >= (3, 5) and hasattr(defer, "deferredCoroutine"):
-    g_test_async = True
-else:
-    g_test_async = False
 
 
 def sleep(numSec):
     return task.deferLater(reactor, numSec, lambda: None)
 
 
-class ReadersWriterDeferredLockTestCase(TestCase):
+class ReadersWriterDeferredLockTestCase(TxRWLockTestCase):
 
     @defer.inlineCallbacks
     def testReaderLock(self):
@@ -39,7 +33,7 @@ class ReadersWriterDeferredLockTestCase(TestCase):
         yield lock.readerRelease()
 
     @defer.inlineCallbacks
-    def testeWriterLock(self):
+    def testWriterLock(self):
         lock = ReadersWriterDeferredLock()
         self.assertFalse(lock.isWriting)
         self.assertFalse(lock.isReading)
@@ -49,16 +43,8 @@ class ReadersWriterDeferredLockTestCase(TestCase):
         yield lock.writerRelease()
         self.assertFalse(lock.isWriting)
 
-    # if g_test_async:
-    #     @defer.deferredCoroutine
-    #     async def testPy3AsyncWithReaderLock(self):
-    #         lock = ReadersWriterDeferredLock()
-    #         async with lock.readerAcquire():
-    #             self.assertTrue(lock.isReading)
-    #         self.assertFalse(lock.isReading)
-
     @defer.inlineCallbacks
-    def testeWriterBlocksReaders(self):
+    def testWriterBlocksReaders(self):
         lock = ReadersWriterDeferredLock()
         self.shared_var = 10
 
@@ -99,3 +85,19 @@ class ReadersWriterDeferredLockTestCase(TestCase):
             ]
         )
         logger.debug("=== TEST FINISHED ===")
+
+    @defer.inlineCallbacks
+    def testReaderFailure(self):
+        lock = ReadersWriterDeferredLock()
+
+        @defer.inlineCallbacks
+        def raiseAfterReadAcquire():
+            try:
+                yield lock.readerAcquire()
+
+                raise Exception("Any exception")
+            finally:
+                yield lock.readerRelease()
+
+        yield self.assertInlineCallbacksRaises(Exception, raiseAfterReadAcquire)
+        self.assertFalse(lock.isReading)
