@@ -6,7 +6,13 @@ Readers/Writer Lock for Twisted
 
 
 Twisted implementation of a  `Readers/Writer Lock
-<https://en.wikipedia.org/wiki/Readers–writer_lock>`_. This synchronization primitive allows to lock
+<https://en.wikipedia.org/wiki/Readers–writer_lock>`_.
+
+- License: MIT
+- Source: https://github.com/Stibbons/txrwlock
+- Overview: http://www.great-a-blog.co/readerswriter-lock-for-twisted/
+
+This synchronization primitive allows to lock
 a share depending on two access roles: "reader" which only access to the data without modifying it,
 and "writer" which may want to change the data in the share.
 
