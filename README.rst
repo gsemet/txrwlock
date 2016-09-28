@@ -97,6 +97,16 @@ from a distribution package or a wheel.
 Development
 -----------
 
+Please note the following magical feature of this repository:
+
+- This package use PBR to compute automatically the version number, generate `ChangeLog` and
+  `AUTHORS`.
+- Deployment to Pypi is automatically made by Travis on successful tag build. Dependencies declared
+  on
+- `requirements.txt` declares the strict minimum of dependencies for external modules that want to
+  use `txrwlock`. These dependencies are not version frozen.
+- For development, unit test, style checks, you **need** to install `requirements-dev.txt` as well.
+
 Create a virtualenv:
 
 .. code-block:: bash
@@ -112,23 +122,14 @@ Setup for development and unit tests
 
     $ pip install --upgrade -r requirements.txt -r requirements-dev.txt -e .
 
-Build source package:
+Build source package, binary package and wheel:
 
 .. code-block:: bash
 
-    python setup.py sdist
+    python setup.py sdist bdist bdist_wheel
 
-Build binary package:
-
-.. code-block:: bash
-
-    python setup.py bdist
-
-Build Wheel package:
-
-.. code-block:: bash
-
-    python setup.py bdist_wheel
+These builds automatically generate `ChangeLog` and `AUTHOR` files from the git commit history,
+thanks PBR.
 
 Execute unit test:
 
