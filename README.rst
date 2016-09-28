@@ -3,6 +3,8 @@ txrwlock
 ===============================
 .. image:: https://travis-ci.org/Stibbons/txrwlock.svg?branch=master
     :target: https://travis-ci.org/Stibbons/txrwlock
+.. image:: https://ci.appveyor.com/api/projects/status/gsnw64oow1mlf72e?svg=true
+    :target: https://ci.appveyor.com/project/Stibbons/txrwlock
 .. image:: https://readthedocs.org/projects/txrwlock/badge/?version=latest
     :target: http://txrwlock.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
@@ -106,6 +108,7 @@ Please note the following magical feature of this repository:
 - `requirements.txt` declares the strict minimum of dependencies for external modules that want to
   use `txrwlock`. These dependencies are not version frozen.
 - For development, unit test, style checks, you **need** to install `requirements-dev.txt` as well.
+- Travis validates txrwlock on Linux and AppVeyor on Windows
 
 Create a virtualenv:
 
