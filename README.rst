@@ -59,7 +59,7 @@ with-priority-for-writers/>`_.
 Usage
 -----
 
-An Inlinecallbacks deferred that needs "read" access to a share use thes following pattern:
+An Inlinecallbacks deferred that needs "read" access to a share use the following pattern:
 
 .. code-block:: python
 
