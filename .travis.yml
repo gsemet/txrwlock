@@ -5,7 +5,7 @@ language: python
 
 os:
     - linux
-    - osx
+    # - osx
 python:
     - 3.5
     - 3.4
