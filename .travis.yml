@@ -47,6 +47,7 @@ script:
     - trial txrwlock
     - coverage run --branch --source=txrwlock $(which trial) txrwlock && coverage report -m
     - python setup.py build_sphinx
+    - python setup.py lint
 
 after_success:
     - "coveralls"

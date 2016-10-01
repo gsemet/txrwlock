@@ -4,7 +4,6 @@ from __future__ import division
 from __future__ import print_function
 
 import logging
-import sys
 
 from twisted.internet import defer
 from twisted.internet import reactor
@@ -21,6 +20,8 @@ def sleep(numSec):
 
 
 class ReadersWriterDeferredLockTestCase(TxRWLockTestCase):
+
+    shared_var = 0
 
     @defer.inlineCallbacks
     def testReaderLock(self):
@@ -99,5 +100,5 @@ class ReadersWriterDeferredLockTestCase(TxRWLockTestCase):
             finally:
                 yield lock.readerRelease()
 
-        yield self.assertInlineCallbacksRaises(Exception, raiseAfterReadAcquire)
+        yield self.assertInlineCbRaises(Exception, raiseAfterReadAcquire)
         self.assertFalse(lock.isReading)

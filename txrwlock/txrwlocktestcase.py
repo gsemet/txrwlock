@@ -12,12 +12,14 @@ __all__ = ['TxRWLockTestCase']
 
 
 class TxRWLockTestCase(TestCase):
+
     '''
     Unit test helper class for Twisted.
 
     Provides useful methods to test exception cases, such as `assertRaisesWithMessage` and
     `assertInlineCallbacksRaisesWithMessage` in addition to `twisted.trial.unittest.TestCase`.
     '''
+
     def __assertExceptionMessageIs(self, err, expectedMessage):
         if hasattr(err, "message"):
             self.assertSubstring(expectedMessage, err.message)
@@ -39,8 +41,8 @@ class TxRWLockTestCase(TestCase):
         raise Exception("{0} not raised".format(exceptionClass,))
 
     @defer.inlineCallbacks
-    def assertInlineCallbacksRaisesWithMessage(self, exceptionClass, expectedMessage,
-                                               inlineCallbacksFunc, *args, **kw):
+    def assertInlineCbRaisesWithMsg(self, exceptionClass, expectedMessage,
+                                    inlineCallbacksFunc, *args, **kw):
         '''
         Assert a given inlineCallbacks decorated method raises with a given message.
 
@@ -56,7 +58,7 @@ class TxRWLockTestCase(TestCase):
         raise Exception("{0} not raised".format(exceptionClass,))
 
     @defer.inlineCallbacks
-    def assertInlineCallbacksRaises(self, exceptionClass, inlineCallbacksFunc, *args, **kw):
+    def assertInlineCbRaises(self, exceptionClass, inlineCallbacksFunc, *args, **kw):
         '''
         Assert a given inlineCallbacks decorated method raises.
 
