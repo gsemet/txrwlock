@@ -45,11 +45,18 @@ install:
 # command to run tests
 script:
     - trial txrwlock
-    - coverage run --branch --source=txrwlock $(which trial) txrwlock && coverage report -m
-    - python setup.py build_sphinx
-    - python setup.py lint
 
 after_success:
+    - coverage run --branch --source=txrwlock $(which trial) txrwlock && coverage report -m
+    - python setup.py build_sphinx
+    - |
+        # execute lint only on one build
+        echo "TRAVIS_OS_NAME=$TRAVIS_OS_NAME"
+        echo "TRAVIS_PYTHON_VERSION=$TRAVIS_PYTHON_VERSION"
+        echo "TWISTED=$TWISTED"
+        if [[ $TRAVIS_OS_NAME == "linux" && $TRAVIS_PYTHON_VERSION == "3.5" && $TWISTED == "latest" ]]; then
+            python setup.py lint
+        fi
     - "coveralls"
     - codecov
 
