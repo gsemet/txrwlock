@@ -7,6 +7,7 @@ os:
     - linux
     # - osx
 python:
+    - 3.6
     - 3.5
     - 3.4
     - 2.7
@@ -36,28 +37,28 @@ install:
     #   - codecov for to codecov.io; see after_success
     #   - coveralls for coveralls.io
     - pip install -U coveralls coverage codecov
-    - pip install -U -r requirements.txt -r requirements-dev.txt .
+    - pipenv install --dev
     - |
         # Overwrite twisted package for test
         set -e
-        [ $TWISTED = latest ] || pip install Twisted==$TWISTED
+        [ $TWISTED = latest ] || pipenv run pip install Twisted==$TWISTED
 
 # command to run tests
 script:
-    - trial txrwlock
+    - pipenv run trial txrwlock
 
 after_success:
     - coverage run --branch --source=txrwlock $(which trial) txrwlock && coverage report -m
-    - python setup.py build_sphinx
+    - pipenv run python setup.py build_sphinx
     - |
         # execute lint only on one build
         echo "TRAVIS_OS_NAME=$TRAVIS_OS_NAME"
         echo "TRAVIS_PYTHON_VERSION=$TRAVIS_PYTHON_VERSION"
         echo "TWISTED=$TWISTED"
         if [[ $TRAVIS_OS_NAME == "linux" && $TRAVIS_PYTHON_VERSION == "3.5" && $TWISTED == "latest" ]]; then
-            python setup.py lint
+            pipenv run python setup.py lint
         fi
-    - "coveralls"
+    - coveralls
     - codecov
 
 deploy:

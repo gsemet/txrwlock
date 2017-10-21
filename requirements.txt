@@ -1,4 +1,0 @@
-# Do not freeze the version of the dependencies!
-
-pbr>=1.6
-twisted>=15.4.0
