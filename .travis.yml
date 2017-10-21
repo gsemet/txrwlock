@@ -13,20 +13,12 @@ python:
     - 2.7
 env:
     - TWISTED=latest
-    - TWISTED=14.0.2
     - TWISTED=15.5.0
     - TWISTED=16.0.0
     - TWISTED=16.1.1
     - TWISTED=16.2.0
     - TWISTED=16.3.2
     - TWISTED=16.4.1
-matrix:
-    exclude:
-        # don't test on earlier version on Python 3, 'trial' is not available before TWISTED=15.4.0
-        - python: 3.5
-          env: TWISTED=14.0.2
-        - python: 3.4
-          env: TWISTED=14.0.2
 
 
 # command to install dependencies
