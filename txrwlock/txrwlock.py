@@ -11,7 +11,7 @@ from __future__ import print_function
 from twisted.internet import defer
 
 
-__all__ = ["ReadersWriterDeferredLock"]
+__all__ = ["TxReadersWriterLock"]
 
 
 class _LightSwitch(object):
@@ -47,7 +47,7 @@ class _LightSwitch(object):
         self.__m.release()
 
 
-class ReadersWriterDeferredLock(object):
+class TxReadersWriterLock(object):
 
     '''
     Readers-Writer Lock for Twisted's Deferred
@@ -81,8 +81,8 @@ class ReadersWriterDeferredLock(object):
 
     Notes:
 
-        Please be aware than ``ReadersWriterDeferredLock.acquire*`` and
-        ``ReadersWriterDeferredLock.release*`` methods are deferred, which is different from
+        Please be aware than ``TxReadersWriterLock.acquire*`` and
+        ``TxReadersWriterLock.release*`` methods are deferred, which is different from
         ``defer.DeferredLock``, where only the ``defer.DeferredLock.acquire()`` method is a
         deferred.
 
@@ -117,12 +117,12 @@ class ReadersWriterDeferredLock(object):
     .. code-block:: python
 
         from twisted.internet import defer
-        from txrwlock.txrwlock import ReadersWriterDeferredLock
+        from txrwlock import TxReadersWriterLock
 
         class MySharedObject(object):
 
             def __init__(self):
-                self._readWriteLock = DeferredReadersWriterLock()
+                self._readWriteLock = TxReadersWriterLock()
                 self._data = {}
 
             @defer.inlineCallbacks

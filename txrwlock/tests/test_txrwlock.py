@@ -9,8 +9,8 @@ from twisted.internet import defer
 from twisted.internet import reactor
 from twisted.internet import task
 
-from txrwlock.txrwlock import ReadersWriterDeferredLock
-from txrwlock.txrwlocktestcase import TxRWLockTestCase
+from txrwlock import TxReadersWriterLock
+from txrwlock import TxTestCase
 
 logger = logging.getLogger(__name__)
 
@@ -19,13 +19,13 @@ def sleep(numSec):
     return task.deferLater(reactor, numSec, lambda: None)
 
 
-class ReadersWriterDeferredLockTestCase(TxRWLockTestCase):
+class TxReadersWriterLockTestCase(TxTestCase):
 
     shared_var = 0
 
     @defer.inlineCallbacks
     def testReaderLock(self):
-        lock = ReadersWriterDeferredLock()
+        lock = TxReadersWriterLock()
         yield lock.readerAcquire()
         yield lock.readerAcquire()
         self.assertFalse(lock.isWriting)
@@ -35,7 +35,7 @@ class ReadersWriterDeferredLockTestCase(TxRWLockTestCase):
 
     @defer.inlineCallbacks
     def testWriterLock(self):
-        lock = ReadersWriterDeferredLock()
+        lock = TxReadersWriterLock()
         self.assertFalse(lock.isWriting)
         self.assertFalse(lock.isReading)
         yield lock.writerAcquire()
@@ -46,7 +46,7 @@ class ReadersWriterDeferredLockTestCase(TxRWLockTestCase):
 
     @defer.inlineCallbacks
     def testWriterBlocksReaders(self):
-        lock = ReadersWriterDeferredLock()
+        lock = TxReadersWriterLock()
         self.shared_var = 10
 
         @defer.inlineCallbacks
@@ -89,7 +89,7 @@ class ReadersWriterDeferredLockTestCase(TxRWLockTestCase):
 
     @defer.inlineCallbacks
     def testReaderFailure(self):
-        lock = ReadersWriterDeferredLock()
+        lock = TxReadersWriterLock()
 
         @defer.inlineCallbacks
         def raiseAfterReadAcquire():

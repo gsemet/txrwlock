@@ -66,13 +66,23 @@ An Inlinecallbacks deferred that needs "read" access to a share use the followin
 
 .. code-block:: python
 
-    @defer.inlineCallbacks
-    def aReaderMethod(...):
-        try:
-            yield rwlocker.readerAcquire()
-            # ... any treatment ...
-        finally:
-            yield rwlocker.readerRelease()
+    from twisted.internet import defer
+    from txrwlock import TxReadersWriterLock
+
+    ...
+
+    class MySharedObject(object):
+
+        def __init__(self):
+            self._readWriteLock = TxReadersWriterLock()
+
+        @defer.inlineCallbacks
+        def aReaderMethod(...):
+            try:
+                yield rwlocker.readerAcquire()
+                # ... any treatment ...
+            finally:
+                yield rwlocker.readerRelease()
 
 An Inlinecallbacks deferred that needs "write" access to a share uses the following pattern:
 
@@ -85,16 +95,6 @@ An Inlinecallbacks deferred that needs "write" access to a share uses the follow
             # ... any treatment ...
         finally:
             yield rwlocker.writerRelease()
-
-Setup for production
---------------------
-
-Just ensure requirements.txt is installed with pip. This step is not useful is you use `txrwlock`
-from a distribution package or a wheel.
-
-.. code-block:: bash
-
-    $ pip install -r requirements.txt .
 
 Development
 -----------
@@ -110,20 +110,11 @@ Please note the following magical feature of this repository:
 - For development, unit test, style checks, you **need** to install `requirements-dev.txt` as well.
 - Travis validates txrwlock on Linux and AppVeyor on Windows
 
-Create a virtualenv:
-
-.. code-block:: bash
-
-    $ virtualenv venv
-    $ # virtualenv --python=python3 venv3
-    $ source venv/bin/activate
-    $ pip install --upgrade pip  # Force upgrade to latest version of pip
-
 Setup for development and unit tests
 
 .. code-block:: bash
 
-    $ pip install --upgrade -r requirements.txt -r requirements-dev.txt -e .
+    $ pipenv install --dev
 
 Build source package, binary package and wheel:
 

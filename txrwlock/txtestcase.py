@@ -8,10 +8,10 @@ from twisted.internet import defer
 from twisted.trial.unittest import TestCase
 
 
-__all__ = ['TxRWLockTestCase']
+__all__ = ['TxTestCase']
 
 
-class TxRWLockTestCase(TestCase):
+class TxTestCase(TestCase):
 
     '''
     Unit test helper class for Twisted.
