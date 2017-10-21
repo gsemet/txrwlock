@@ -11,8 +11,8 @@ environment:
 
 install:
     # Twisted requires pywin32 on Windows in order to spawn processes.
-    - "%PYTHON%\\python.exe -m pip install pypiwin32"
-    - "%PYTHON%\\python.exe -m pip install -r requirements.txt -r requirements-dev.txt"
+    - "%PYTHON%\\python.exe -m pip install pypiwin32 pipenv"
+    - "%PYTHON%\\python.exe -m pipenv install --dev --system"
 
 build: false
 
