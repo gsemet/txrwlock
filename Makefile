@@ -11,3 +11,6 @@ doc:
 
 pylint:
 	pipenv run pylint --rcfile .pylintrc txrwlock
+
+yapf:
+	pipenv run yapf --recursive -i txrwlock

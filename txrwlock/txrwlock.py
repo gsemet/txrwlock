@@ -10,7 +10,6 @@ from __future__ import print_function
 
 from twisted.internet import defer
 
-
 __all__ = ["TxReadersWriterLock"]
 
 
@@ -48,7 +47,6 @@ class _LightSwitch(object):
 
 
 class TxReadersWriterLock(object):
-
     '''
     Readers-Writer Lock for Twisted's Deferred
 

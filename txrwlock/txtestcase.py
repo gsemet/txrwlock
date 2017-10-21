@@ -6,12 +6,10 @@ from __future__ import print_function
 from twisted.internet import defer
 from twisted.trial.unittest import TestCase
 
-
 __all__ = ['TxTestCase']
 
 
 class TxTestCase(TestCase):
-
     '''
     Unit test helper class for Twisted.
 
@@ -37,11 +35,12 @@ class TxTestCase(TestCase):
         except exceptionClass as err:
             self.__assertExceptionMessageIs(err, expectedMessage)
             return
-        raise Exception("{0} not raised".format(exceptionClass,))
+        raise Exception("{0} not raised".format(exceptionClass, ))
 
     @defer.inlineCallbacks
-    def assertInlineCbRaisesWithMsg(self, exceptionClass, expectedMessage,
-                                    inlineCallbacksFunc, *args, **kw):
+    def assertInlineCbRaisesWithMsg(
+        self, exceptionClass, expectedMessage, inlineCallbacksFunc, *args, **kw
+    ):
         '''
         Assert a given inlineCallbacks decorated method raises with a given message.
 
@@ -54,7 +53,7 @@ class TxTestCase(TestCase):
         except exceptionClass as err:
             self.__assertExceptionMessageIs(err, expectedMessage)
             return
-        raise Exception("{0} not raised".format(exceptionClass,))
+        raise Exception("{0} not raised".format(exceptionClass, ))
 
     @defer.inlineCallbacks
     def assertInlineCbRaises(self, exceptionClass, inlineCallbacksFunc, *args, **kw):

@@ -6,7 +6,4 @@ from __future__ import print_function
 from .txrwlock import TxReadersWriterLock
 from .txtestcase import TxTestCase
 
-__all__ = [
-    'TxTestCase',
-    'TxReadersWriterLock'
-]
+__all__ = ['TxTestCase', 'TxReadersWriterLock']
