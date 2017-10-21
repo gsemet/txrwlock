@@ -38,9 +38,12 @@ class TxTestCase(TestCase):
         raise Exception("{0} not raised".format(exceptionClass, ))
 
     @defer.inlineCallbacks
-    def assertInlineCbRaisesWithMsg(
-        self, exceptionClass, expectedMessage, inlineCallbacksFunc, *args, **kw
-    ):
+    def assertInlineCbRaisesWithMsg(self,
+                                    exceptionClass,
+                                    expectedMessage,
+                                    inlineCallbacksFunc,
+                                    *args,
+                                    **kw):
         '''
         Assert a given inlineCallbacks decorated method raises with a given message.
 
