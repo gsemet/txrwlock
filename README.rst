@@ -114,13 +114,13 @@ Setup for development and unit tests
 
 .. code-block:: bash
 
-    $ pipenv install --dev
+    $ make dev
 
 Build source package, binary package and wheel:
 
 .. code-block:: bash
 
-    python setup.py sdist bdist bdist_wheel
+    make dists
 
 These builds automatically generate `ChangeLog` and `AUTHOR` files from the git commit history,
 thanks PBR.
@@ -129,10 +129,10 @@ Execute unit test:
 
 .. code-block:: bash
 
-    trial txrwlock
+    make test
 
 Execute coverage:
 
 .. code-block:: bash
 
-    trial --coverage txrwlock
+    make coverage

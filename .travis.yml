@@ -32,7 +32,7 @@ matrix:
 # command to install dependencies
 install:
     # Upgrade to latest version of pip
-    - pip install -U pip
+    - pip install -U pip pipenv
     # install external service interface:
     #   - codecov for to codecov.io; see after_success
     #   - coveralls for coveralls.io

@@ -6,6 +6,9 @@ dev:
 test:
 	pipenv run trial txrwlock
 
+coverage:
+	pipenv run trial --coverage txrwlock
+
 doc:
 	pipenv run python setup.py build_sphinx
 
@@ -14,3 +17,6 @@ pylint:
 
 yapf:
 	pipenv run yapf --recursive -i txrwlock
+
+dists:
+	python setup.py sdist bdist bdist_wheel
