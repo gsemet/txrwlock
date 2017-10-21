@@ -43,13 +43,12 @@ Source Documentation
 Readers/Writer Deferred Lock
 ----------------------------
 
-.. autoclass:: txrwlock.txrwlock.ReadersWriterDeferredLock
+.. autoclass:: txrwlock.TxReadersWriterLock
    :members:
 
 
 Readers/Writer Deferred Lock TestCase
 -------------------------------------
 
-.. autoclass:: txrwlock.txrwlocktestcase.TxRWLockTestCase
+.. autoclass:: txrwlock.TxTestCase
    :members:
-

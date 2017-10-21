@@ -56,7 +56,7 @@ after_success:
         echo "TRAVIS_PYTHON_VERSION=$TRAVIS_PYTHON_VERSION"
         echo "TWISTED=$TWISTED"
         if [[ $TRAVIS_OS_NAME == "linux" && $TRAVIS_PYTHON_VERSION == "3.5" && $TWISTED == "latest" ]]; then
-            pipenv run python setup.py lint
+            make pylint
         fi
     - coveralls
     - codecov

@@ -1,3 +1,5 @@
+.PHONY: build doc
+
 dev:
 	pipenv install --dev
 
@@ -6,3 +8,6 @@ test:
 
 doc:
 	pipenv run python setup.py build_sphinx
+
+pylint:
+	pipenv run pylint --rcfile .pylintrc txrwlock
