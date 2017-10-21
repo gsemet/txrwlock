@@ -37,7 +37,7 @@ install:
     #   - codecov for to codecov.io; see after_success
     #   - coveralls for coveralls.io
     - pip install -U coveralls coverage codecov
-    - pipenv install --dev
+    - make dev
     - |
         # Overwrite twisted package for test
         set -e
@@ -45,11 +45,11 @@ install:
 
 # command to run tests
 script:
-    - pipenv run trial txrwlock
+    - make test
 
 after_success:
     - coverage run --branch --source=txrwlock $(which trial) txrwlock && coverage report -m
-    - pipenv run python setup.py build_sphinx
+    - make doc
     - |
         # execute lint only on one build
         echo "TRAVIS_OS_NAME=$TRAVIS_OS_NAME"

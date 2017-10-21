@@ -57,3 +57,5 @@ doc/build
 *~
 .*.swp
 .*sw?
+
+__pycache__/

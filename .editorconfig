@@ -8,3 +8,13 @@ end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
+
+[*.rst]
+tab_width = 4
+
+[*.yml]
+tab_width = 2
+
+[Makefile]
+indent_style = tab
+indent_size = 4
