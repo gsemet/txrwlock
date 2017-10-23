@@ -10,11 +10,12 @@
 
 -e .
 flake8>=3.0
-pipenv-to-requirements
+pipenv-to-requirements>=0.1.6
 pyflakes<1.6.0,>=1.5.0
 pylint>=1.6.4
 pytest
 pyyaml>=3.11
 sphinx>=1.4.6
 tox
+wheel
 yapf>=0.12

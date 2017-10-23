@@ -37,6 +37,7 @@ install:
 
 # command to run tests
 script:
+    - make requirements
     - make test
 
 after_success:
