@@ -1,5 +1,7 @@
 .PHONY: build doc
 
+all: dev requirements test dists doc
+
 dev:
 	pipenv install --dev
 
@@ -23,3 +25,6 @@ dists:
 
 requirements:
 	pipenv run pipenv_to_requirements
+
+clean:
+	pipenv --rm
