@@ -14,8 +14,8 @@ pytest = "*"
 sphinx = ">=1.4.6"
 tox = "*"
 yapf = ">=0.12"
-"-e ." = "*"
 pipenv-to-requirements = "*"
+"e1839a8" = {editable = true, path = "."}
 
 
 [packages]
