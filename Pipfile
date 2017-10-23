@@ -5,7 +5,6 @@ verify_ssl = true
 
 
 [dev-packages]
-
 "flake8" = ">=3.0"
 pyflakes = "<1.6.0,>=1.5.0"
 pylint = ">=1.6.4"
@@ -14,11 +13,10 @@ pytest = "*"
 sphinx = ">=1.4.6"
 tox = "*"
 yapf = ">=0.12"
-pipenv-to-requirements = "*"
+pipenv-to-requirements = ">=0.1.6"
 "e1839a8" = {editable = true, path = "."}
 
 
 [packages]
-
 pbr = ">=1.6"
 twisted = ">=15.4.0"
