@@ -28,3 +28,6 @@ requirements:
 
 clean:
 	pipenv --rm
+
+update:
+	pipenv update

@@ -14,7 +14,7 @@ pytest = "*"
 sphinx = ">=1.4.6"
 tox = "*"
 yapf = ">=0.12"
-pipenv-to-requirements = ">=0.1.6"
+pipenv-to-requirements = ">=0.1.9"
 "e1839a8" = {editable = true, path = "."}
 wheel = "*"
 
