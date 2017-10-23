@@ -1,0 +1,20 @@
+################################################################################
+# This requirements files has been automatically generated from `Pipfile` with
+# `pipenv-to-requirements`
+#
+## This has been done to maintain backward compatibility with tools and services
+# that does not support `Pipfile` yet.
+## Do NOT edit it directly, use `pipenv install [-d]` to modify `Pipfile` and
+# `Pipfile.lock`
+################################################################################
+
+-e .
+flake8>=3.0
+pipenv-to-requirements
+pyflakes<1.6.0,>=1.5.0
+pylint>=1.6.4
+pytest
+pyyaml>=3.11
+sphinx>=1.4.6
+tox
+yapf>=0.12

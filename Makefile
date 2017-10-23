@@ -20,3 +20,6 @@ yapf:
 
 dists:
 	python setup.py sdist bdist bdist_wheel
+
+requirements:
+	pipenv run pipenv_to_requirements
