@@ -90,6 +90,10 @@ class TxReadersWriterLock(object):
 
     .. code-block:: python
 
+        from txrwlock import TxReadersWriterLock
+
+        rwlocker = TxReadersWriterLock()
+
         @defer.inlineCallbacks
         def aReaderMethod(...):
             try:
@@ -126,20 +130,20 @@ class TxReadersWriterLock(object):
             @defer.inlineCallbacks
             def performHeavyTreatmentOnData(self):
                 try:
-                    yield rwlocker.readerAcquire()
+                    yield self._readWriteLock.readerAcquire()
                     # self._data is read and need to stay coherent during the whole current method
                     yield anyOtherVeryLongDeferredThatReadsData(self._data)
                     # self._data is read again
                 finally:
-                    yield rwlocker.readerRelease()
+                    yield self._readWriteLock.readerRelease()
 
             @defer.inlineCallbacks
             def changeDataValue(self):
                 try:
-                    yield rwlocker.writerAcquire()
+                    yield self._readWriteLock.writerAcquire()
                     # Change self._data somehow
                 finally:
-                    yield rwlocker.writerRelease()
+                    yield self._readWriteLock.writerRelease()
 
     There could be as many simultanous calls to ``MySharedObject.performHeavyTreatmentOnData``
     at the same time (during ``anyOtherVeryLongDeferredThatReadsData``, the reactor might

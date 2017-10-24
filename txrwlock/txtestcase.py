@@ -13,8 +13,8 @@ class TxTestCase(TestCase):
     '''
     Unit test helper class for Twisted.
 
-    Provides useful methods to test exception cases, such as `assertRaisesWithMessage` and
-    `assertInlineCallbacksRaisesWithMessage` in addition to `twisted.trial.unittest.TestCase`.
+    Provides useful methods to test exception cases, such as ``assertRaisesWithMessage`` and
+    ``assertInlineCallbacksRaisesWithMessage`` in addition to ``twisted.trial.unittest.TestCase``.
     '''
 
     def __assertExceptionMessageIs(self, err, expectedMessage):
@@ -27,8 +27,8 @@ class TxTestCase(TestCase):
         '''
         Check if a given function call (synchronous or deferred) raised with a given message.
 
-        Note: You cannot use an inlineCallbacks as func. Please use
-        assertInlineCallbacksRaisesWithMessage.
+        Note: You cannot use an ``inlineCallbacks`` as func. Please use
+        ``assertInlineCallbacksRaisesWithMessage``.
         '''
         try:
             defer.maybeDeferred(func(*args, **kw))
@@ -47,9 +47,9 @@ class TxTestCase(TestCase):
         '''
         Assert a given inlineCallbacks decorated method raises with a given message.
 
-        This replaces assertRaisesWithMessage for inlineCallbacks.
+        This replaces ``assertRaisesWithMessage`` for ``inlineCallbacks``.
 
-        Note: this method is an inlineCallbacks and need to be yielded.
+        Note: this method is an ``inlineCallbacks`` and need to be yielded.
         '''
         try:
             yield inlineCallbacksFunc(*args, **kw)
@@ -63,9 +63,9 @@ class TxTestCase(TestCase):
         '''
         Assert a given inlineCallbacks decorated method raises.
 
-        This replaces assertRaisesWithMessage for inlineCallbacks.
+        This replaces ``assertRaisesWithMessage`` for ``inlineCallbacks``.
 
-        Note: this method is an inlineCallbacks and need to be yielded.
+        Note: this method is an ``inlineCallbacks`` and need to be yielded.
         '''
         try:
             yield inlineCallbacksFunc(*args, **kw)
